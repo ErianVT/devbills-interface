@@ -1,6 +1,7 @@
 import { CreditCard, List, TrendingUp, Wallet } from "lucide-react";
 
 import type { JSX } from "react";
+import { useNavigate } from "react-router";
 import Button from "../components/Button";
 
 interface Feature {
@@ -10,6 +11,7 @@ interface Feature {
 }
 
 const Home = () => {
+  const navigate = useNavigate();
   const features: ReadonlyArray<Feature> = [
     {
       icon: <Wallet className="w-8 h-8 text-primary-500" />,
@@ -49,7 +51,9 @@ const Home = () => {
                 suas finanças pessoais ou do seu negócio com facilidade.
               </p>
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <Button className="text-center px-6 py-3">Começar agora</Button>
+                <Button className="text-center px-6 py-3" onClick={() => navigate("/login")}>
+                  Começar agora
+                </Button>
               </div>
             </div>
           </div>
@@ -88,7 +92,9 @@ const Home = () => {
               Comece a usar o DevBills hoje mesmo e tenha o controle total sobre seu dinheiro. É
               gratuito e fácil de usar!
             </p>
-            <Button className="mx-auto px-6 py-3">Criar conta Gratuita</Button>
+            <Button className="mx-auto px-6 py-3" onClick={() => navigate("/login")}>
+              Criar conta Gratuita
+            </Button>
           </div>
         </section>
       </div>
