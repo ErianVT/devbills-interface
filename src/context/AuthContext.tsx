@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       firebaseAuth,
       (user) => {
         console.log(user);
+
         if (user) {
           setAuthState({
             user: {
