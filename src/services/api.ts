@@ -1,4 +1,4 @@
-import axios, { type AxiosInstance } from "axios";
+import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
 import { firebaseAuth } from "../config/firebase"; // ✅ Importa o auth
 
 export const api: AxiosInstance = axios.create({
@@ -7,16 +7,22 @@ export const api: AxiosInstance = axios.create({
 });
 
 // ✅ ADICIONA O INTERCEPTOR:
-api.interceptors.request.use(async (config) => {
-  const user = firebaseAuth.currentUser;
+api.interceptors.request.use(
+  async (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
+    const user = firebaseAuth.currentUser;
 
-  if (user) {
-    const token = await user.getIdToken();
-    config.headers.Authorization = `Bearer ${token}`;
-    console.log("🔑 Token enviado:", `${token.substring(0, 30)}...`);
-  } else {
-    console.warn("⚠ Usuário não autenticado!");
-  }
+    if (user) {
+      try {
+        const token = await user.getIdToken();
+        config.headers.Authorization = `Bearer ${token}`;
+        console.log("🔑 Token enviado:", `${token.substring(0, 30)}...`);
+      } catch (error) {
+        console.error("❌ Erro ao obter o token do usuário:", error);
+      }
+    } else {
+      console.warn("⚠ Usuário não autenticado!");
+    }
 
-  return config;
-});
+    return config;
+  },
+);
