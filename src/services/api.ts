@@ -15,7 +15,7 @@ api.interceptors.request.use(
       try {
         const token = await user.getIdToken();
         config.headers.Authorization = `Bearer ${token}`;
-        console.log("🔑 Token enviado:", `${token.substring(0, 30)}...`);
+        console.log("🔑 viado:", `${token.substring(0, 30)}...`);
       } catch (error) {
         console.error("❌ Erro ao obter o token do usuário:", error);
       }

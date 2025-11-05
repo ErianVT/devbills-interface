@@ -62,7 +62,7 @@ const MonthYearSelect = ({ month, year, onMonthChange, onYearChange }: MonthYear
         <select
           value={month}
           onChange={(event) => onMonthChange(Number(event.target.value))}
-          //  id="month-select"
+          id="month-select"
           className="bg-gray-800 border border-gray-700 rounded-md py-1 px-3 text-sm font-medium text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500 cursor-pointer"
         >
           {monthNames.map((name, index) => (
@@ -78,7 +78,7 @@ const MonthYearSelect = ({ month, year, onMonthChange, onYearChange }: MonthYear
         <select
           value={year}
           onChange={(event) => onYearChange(Number(event.target.value))}
-          //  id="year-select"
+          id="year-select"
           className="bg-gray-800 border border-gray-700 rounded-md py-1 px-3 text-sm font-medium text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500 cursor-pointer"
         >
           {years.map((name) => (
