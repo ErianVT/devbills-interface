@@ -1,9 +1,9 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes } from "react";
 
 type ButtonVariants = "primary" | "outline" | "secondary" | "success" | "danger";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
+  children: Node;
   variant?: ButtonVariants;
   fullWidth?: boolean;
   isLoading?: boolean;
