@@ -71,7 +71,7 @@ const Home = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {features.map((feature) => (
-                <div key={feature.title} className="bg-gray-800 p-6 rounder-xl hover:shadow-lg ">
+                <div key={feature.title} className="bg-gray-800 p-6 rounded-xl hover:shadow-lg ">
                   <div className="mb-4 bg-primary-500/10 p-3 rounded-full inline-block">
                     {feature.icon}
                   </div>

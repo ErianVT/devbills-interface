@@ -1,14 +1,16 @@
 import { AlertCircle, Calendar, DollarSign, Save, Tag } from "lucide-react";
 import { type ChangeEvent, type FormEvent, useEffect, useId, useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Select from "../components/Select";
 import TransactionTypeSelector from "../components/TransactionTypeSelector";
 import { getCategories } from "../services/categoryService";
+import { createTransaction } from "../services/transactionService";
 import type { Category } from "../types/category";
-import { TransactionType } from "../types/transactions";
+import { type CreateTransactionDTO, TransactionType } from "../types/transactions";
 
 interface FormData {
   description: string;
@@ -30,6 +32,7 @@ const TransactionsForm = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const formId = useId();
   const navigate = useNavigate();
 
@@ -68,14 +71,30 @@ const TransactionsForm = () => {
 
   const handleSubmit = async (event: FormEvent): Promise<void> => {
     event.preventDefault();
+    setLoading(true);
+    setError(null);
 
     try {
       if (!validadeForm()) {
         return;
       }
-    } catch (_error) {}
 
-    console.log(event);
+      const transactionData: CreateTransactionDTO = {
+        description: formData.description,
+        amount: Number(formData.amount),
+        categoryId: formData.categoryId,
+        type: formData.type,
+        date: `${formData.date}T12:00:00.000Z`,
+      };
+
+      await createTransaction(transactionData);
+      toast.success("Transação adicionada com sucesso!");
+      navigate("/transacoes");
+    } catch (_error) {
+      toast.error("Erro ao adicionar a transação. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -150,14 +169,22 @@ const TransactionsForm = () => {
             />
 
             <div className="flex justify-end space-x-3 mt-2">
-              <Button variant="outline" onClick={handleCancel} type="button">
+              <Button variant="outline" onClick={handleCancel} type="button" disabled={loading}>
                 Cancelar
               </Button>
               <Button
+                disabled={loading}
                 type="submit"
                 variant={formData.type === TransactionType.EXPENSE ? "danger" : "success"}
               >
-                <Save className="w-4 h-4 mr-2" /> Salvar
+                <div className="flex items-center justify-center min-w-[20px]">
+                  {loading ? (
+                    <div className="w-4 h-4 border-4 border-gray-700 border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4 mr-2" />
+                  )}
+                </div>
+                Salvar
               </Button>
             </div>
           </form>
